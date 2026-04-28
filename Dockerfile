@@ -1,4 +1,4 @@
-FROM golang:1.21-alpine AS build
+FROM public.ecr.aws/docker/library/golang:1.21-alpine AS build
 WORKDIR /app
 # go mod download fetches modules from VCS; alpine doesn't ship git.
 RUN apk add --no-cache git
@@ -7,7 +7,7 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 go build -o server .
 
-FROM alpine:3.19
+FROM public.ecr.aws/docker/library/alpine:3.19
 WORKDIR /app
 COPY --from=build /app/server .
 EXPOSE 8082
