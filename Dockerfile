@@ -1,5 +1,7 @@
 FROM golang:1.21-alpine AS build
 WORKDIR /app
+# go mod download fetches modules from VCS; alpine doesn't ship git.
+RUN apk add --no-cache git
 COPY go.* ./
 RUN go mod download
 COPY . .
